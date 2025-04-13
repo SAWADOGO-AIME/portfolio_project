@@ -1,0 +1,366 @@
+{% extends 'jeux/base.html' %}
+{% load static %}
+
+{% block title %}{{ jeu.titre }}{% endblock %}
+
+{% block content %}
+<!-- Hero section pour le jeu -->
+<div class="row animate__animated animate__fadeIn">
+    <div class="col-12 mb-4">
+        <div class="bg-gradient-primary text-white py-5 px-4 rounded-lg shadow-lg position-relative overflow-hidden">
+            <div class="position-absolute top-0 end-0 p-3">
+                <span class="badge rounded-pill bg-warning text-dark">
+                    <i class="fas fa-star me-1"></i> Jeu populaire
+                </span>
+            </div>
+            <h1 class="display-4 fw-bold mb-0">{{ jeu.titre }}</h1>
+            <div class="d-flex mt-2 mb-3">
+                <span class="badge bg-primary me-2 py-2 px-3">
+                    <i class="fas fa-thumbs-up"></i> {{ total_likes }} likes
+                </span>
+                <span class="badge bg-secondary py-2 px-3">
+                    <i class="fas fa-comments"></i> {{ commentaires.count }} commentaires
+                </span>
+                <span class="badge bg-info py-2 px-3 ms-2">
+                    <i class="fas fa-calendar-alt"></i> {{ jeu.date_creation|date:"d/m/Y" }}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- Carte principale du jeu -->
+        <div class="card mb-4 border-0 shadow-sm hover-card animate__animated animate__fadeInUp">
+            <div class="card-header bg-gradient-dark text-white py-3">
+                <h2 class="card-title mb-0 fw-bold"><i class="fas fa-gamepad me-2"></i>{{ jeu.titre }}</h2>
+            </div>
+            
+            <div class="card-body">
+                <div class="media-container mb-4 position-relative overflow-hidden rounded-3">
+                    {% if jeu.media_type == 'IMAGE' and jeu.image %}
+                        <img src="{{ jeu.image.url }}" class="img-fluid w-100 rounded shadow hover-zoom" alt="{{ jeu.titre }}">
+                    {% elif jeu.media_type == 'VIDEO' and jeu.video_url %}
+                    <div style="width: 100%; height: 200px; overflow: hidden;">
+                        <video src="{{ jeu.video_url.url }}" width="100%" height="100%" autoplay loop muted playsinline disablePictureInPicture controlsList="nodownload" style="pointer-events: none; object-fit: cover;" oncontextmenu="return false;"></video>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="description-container position-relative">
+                    <div class="p-3 bg-light rounded-3 mb-3">
+                        <h3 class="h5 text-primary mb-3"><i class="fas fa-info-circle me-2"></i>À propos du jeu</h3>
+                        <p class="card-text lead">{{ jeu.description }}</p>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <div class="engagement-stats d-flex gap-3">
+                        <span class="badge bg-primary fs-6 d-flex align-items-center p-2 pulse-animation">
+                            <i class="fas fa-thumbs-up me-2"></i> {{ total_likes }} likes
+                        </span>
+                        <span class="badge bg-secondary fs-6 d-flex align-items-center p-2">
+                            <i class="fas fa-comments me-2"></i> {{ commentaires.count }} commentaires
+                        </span>
+                    </div>
+                    <div class="publication-date">
+                        <span class="text-muted fst-italic">
+                            <i class="fas fa-clock me-1"></i> Publié le {{ jeu.date_creation|date:"d/m/Y" }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section des posts associés au jeu -->
+        <div class="card mb-4 border-0 shadow-sm animate__animated animate__fadeInUp">
+            <div class="card-header bg-gradient-info text-white py-3">
+                <h3 class="card-title mb-0 fw-bold">
+                    <i class="fas fa-th-list me-2"></i> Posts associés
+                    <div class="float-end">
+                        <span class="badge rounded-pill bg-white text-info bounce-animation">Nouveau</span>
+                    </div>
+                </h3>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    {% for post in posts %}
+                        <div class="list-group-item p-4 hover-highlight">
+                            <h4 class="text-primary mb-3">{{ post.titre }}</h4>
+                            
+                            <div class="mb-3">
+                                {% if post.type == 'IMAGE' and post.image %}
+                                    <div class="position-relative overflow-hidden rounded-3">
+                                        <img src="{{ post.image.url }}" class="img-fluid rounded shadow-sm hover-zoom" alt="{{ post.titre }}">
+                                    </div>
+                                {% elif post.type == 'VIDEO' and post.video_url %}
+                                    <div class="ratio ratio-16x9 rounded-3 overflow-hidden shadow-sm">
+                                        <iframe src="{{ post.video_url }}" allowfullscreen></iframe>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <p class="mb-2">{{ post.description }}</p>
+                            <div class="d-flex justify-content-end">
+                                <span class="badge bg-light text-muted">
+                                    <i class="fas fa-calendar-alt me-1"></i> {{ post.date_creation|date:"d/m/Y" }}
+                                </span>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="text-center p-5">
+                            <i class="fas fa-folder-open text-muted fa-3x mb-3"></i>
+                            <p class="lead text-muted">Aucun post disponible pour ce jeu.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section des commentaires -->
+        <div class="card mb-4 border-0 shadow-sm animate__animated animate__fadeInUp">
+            <div class="card-header bg-gradient-light py-3">
+                <h3 class="card-title mb-0 fw-bold">
+                    <i class="fas fa-comments me-2"></i> Commentaires 
+                    <span class="badge rounded-pill bg-secondary ms-2">{{ commentaires.count }}</span>
+                </h3>
+            </div>
+            <div class="card-body">
+                {% for commentaire in commentaires %}
+                    <div class="comment p-3 mb-3 bg-light rounded-3 hover-shadow">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="mb-0">
+                                <i class="fas fa-user-circle me-2 text-primary"></i>{{ commentaire.nom }}
+                            </h5>
+                            <span class="badge bg-light text-muted">
+                                <i class="fas fa-clock me-1"></i> {{ commentaire.date_creation|date:"d/m/Y H:i" }}
+                            </span>
+                        </div>
+                        <p class="mb-0">{{ commentaire.contenu }}</p>
+                    </div>
+                {% empty %}
+                    <div class="text-center p-5">
+                        <i class="far fa-comment-dots text-muted fa-3x mb-3 floating-animation"></i>
+                        <p class="lead text-muted">Aucun commentaire pour le moment. Soyez le premier à commenter!</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4 animate__animated animate__fadeInRight">
+        <!-- Formulaire pour like -->
+        <div class="card mb-4 border-0 shadow-sm hover-card">
+            <div class="card-header bg-gradient-primary text-white py-3">
+                <h3 class="card-title mb-0 fw-bold">
+                    <i class="fas fa-thumbs-up me-2 pulse-animation"></i> Liker ce jeu
+                </h3>
+            </div>
+            <div class="card-body p-4">
+                <form method="post" class="needs-validation">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ like_form.as_p }}
+                    </div>
+                    <button type="submit" name="like_submit" class="btn btn-primary btn-lg w-100 shadow-sm hover-grow">
+                        <i class="fas fa-thumbs-up me-2"></i> J'aime ce jeu
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Formulaire pour commenter -->
+        <div class="card border-0 shadow-sm hover-card">
+            <div class="card-header bg-gradient-secondary text-white py-3">
+                <h3 class="card-title mb-0 fw-bold">
+                    <i class="fas fa-comment me-2"></i> Ajouter un commentaire
+                </h3>
+            </div>
+            <div class="card-body p-4">
+                <form method="post" class="needs-validation">
+                    {% csrf_token %}
+                    <div class="form-floating mb-3">
+                        {{ commentaire_form.as_p }}
+                    </div>
+                    <button type="submit" name="comment_submit" class="btn btn-secondary btn-lg w-100 shadow-sm hover-grow">
+                        <i class="fas fa-paper-plane me-2"></i> Envoyer mon commentaire
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Nouvelles sections -->
+        <div class="card mt-4 border-0 shadow-sm">
+            <div class="card-header bg-gradient-success text-white py-3">
+                <h3 class="card-title mb-0 fw-bold">
+                    <i class="fas fa-trophy me-2"></i> Jeux similaires
+                </h3>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action p-3 d-flex align-items-center hover-highlight">
+                        <div class="flex-shrink-0">
+                            <div class="bg-light rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                <i class="fas fa-gamepad text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="mb-0">Jeu similaire 1</h6>
+                            <small class="text-muted">5 commentaires</small>
+                        </div>
+                        <span class="ms-auto">
+                            <i class="fas fa-chevron-right text-muted"></i>
+                        </span>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action p-3 d-flex align-items-center hover-highlight">
+                        <div class="flex-shrink-0">
+                            <div class="bg-light rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                <i class="fas fa-gamepad text-success"></i>
+                            </div>
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="mb-0">Jeu similaire 2</h6>
+                            <small class="text-muted">8 commentaires</small>
+                        </div>
+                        <span class="ms-auto">
+                            <i class="fas fa-chevron-right text-muted"></i>
+                        </span>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action p-3 d-flex align-items-center hover-highlight">
+                        <div class="flex-shrink-0">
+                            <div class="bg-light rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                <i class="fas fa-gamepad text-danger"></i>
+                            </div>
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="mb-0">Jeu similaire 3</h6>
+                            <small class="text-muted">3 commentaires</small>
+                        </div>
+                        <span class="ms-auto">
+                            <i class="fas fa-chevron-right text-muted"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Styles CSS personnalisés -->
+<style>
+/* Animations */
+.pulse-animation {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.floating-animation {
+    animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+.bounce-animation {
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Effets au survol */
+.hover-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+.hover-grow {
+    transition: transform 0.2s;
+}
+
+.hover-grow:hover {
+    transform: scale(1.03);
+}
+
+.hover-shadow:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.hover-zoom {
+    transition: transform 0.5s;
+}
+
+.hover-zoom:hover {
+    transform: scale(1.03);
+}
+
+.hover-highlight {
+    transition: background-color 0.3s;
+}
+
+.hover-highlight:hover {
+    background-color: rgba(0,0,0,0.03);
+}
+
+/* Backgrounds */
+.bg-gradient-primary {
+    background: linear-gradient(45deg, #0d6efd, #0dcaf0);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(45deg, #0dcaf0, #31d2f2);
+}
+
+.bg-gradient-secondary {
+    background: linear-gradient(45deg, #6c757d, #adb5bd);
+}
+
+.bg-gradient-success {
+    background: linear-gradient(45deg, #198754, #20c997);
+}
+
+.bg-gradient-light {
+    background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+}
+
+.bg-gradient-dark {
+    background: linear-gradient(45deg, #212529, #495057);
+}
+</style>
+
+<!-- JavaScript pour animations et interactions dynamiques -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Préparation des animations d'entrée
+    document.querySelectorAll('.animate__animated').forEach(function(el, index) {
+        el.style.animationDelay = (index * 0.1) + 's';
+    });
+    
+    // Ajouter des effets de survol et des interactions
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+            this.classList.add('pulse-animation');
+        });
+        button.addEventListener('mouseleave', function() {
+            this.classList.remove('pulse-animation');
+        });
+    });
+});
+</script>
+{% endblock %}

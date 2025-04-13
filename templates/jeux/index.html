@@ -1,0 +1,238 @@
+{% extends 'jeux/base.html' %}
+{% load static %}
+
+{% block title %}Jeux - Accueil{% endblock %}
+
+{% block content %}
+<!-- Hero Section Améliorée -->
+<div class="row">
+    <div class="col-12">
+        <div class="jumbotron hero-section text-white p-5 rounded">
+            <div class="hero-content">
+                <h1 class="display-4 hero-title">Bienvenue sur notre plateforme de jeux!</h1>
+                <p class="lead hero-subtitle">Découvrez nos jeux et partagez votre opinion.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Section Jeux Améliorée -->
+<section id="body" class="my-5 text-center">
+    <h2 class="mb-4 section-title">Nos Jeux</h2>
+    
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for jeu in jeux %}
+            <div class="col">
+                <div class="card game-card h-100 shadow-sm">
+                    {% if jeu.media_type == 'IMAGE' and jeu.image %}
+                        <img src="{{ jeu.image.url }}" class="card-img-top game-card-img" alt="{{ jeu.titre }}">
+                    {% elif jeu.media_type == 'VIDEO' and jeu.video_url %}
+                        <div style="width: 100%; height: 200px; overflow: hidden;">
+                            <video src="{{ jeu.video_url.url }}" width="100%" height="100%" autoplay loop muted playsinline disablePictureInPicture controlsList="nodownload" style="pointer-events: none; object-fit: cover;" oncontextmenu="return false;"></video>
+                        </div>
+                    
+                    {% else %}
+                        <div class="game-card-placeholder text-center py-5">
+                            <i class="fas fa-gamepad fa-4x game-icon"></i>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="card-body game-card-body">
+                        <h5 class="card-title game-title">{{ jeu.titre }}</h5>
+                        <p class="card-text game-description">{{ jeu.description|truncatechars:100 }}</p>
+                    </div>
+                    
+                    <div class="card-footer bg-white game-card-footer d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="badge badge-likes">
+                                <i class="fas fa-thumbs-up"></i> {{ jeu.total_likes }}
+                            </span>
+                            <span class="badge badge-comments ms-2">
+                                <i class="fas fa-comments"></i> {{ jeu.total_comments }}
+                            </span>
+                        </div>
+                        <a href="{% url 'detail_jeu' jeu.id %}" class="btn btn-view-more">Voir plus</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="empty-games">
+                    <i class="fas fa-dice fa-4x"></i>
+                    <p>Aucun jeu disponible pour le moment.</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Styles CSS personnalisés à ajouter dans votre base.html ou un fichier CSS externe -->
+<style>
+
+    :root {
+        --primary-color: #5641f4;
+        --secondary-color: #ff4d94;
+        --dark-color: #1a1a2e;
+        --light-color: #f0f0ff;
+    }
+    #body {
+    background: linear-gradient(135deg, #00aaff, #8e44ad, #f39c12, #3498db, #1abc9c);
+    font-family: 'Arial', sans-serif;
+    color: var(--dark-color);
+    background-size: 400% 400%; /* Pour donner un effet dynamique aux couleurs */
+    animation: gradientAnimation 10s ease infinite; /* Animation du dégradé */
+}
+
+/* Animation pour faire défiler les couleurs */
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+    
+    .hero-section {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .hero-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        opacity: 0.1;
+        mix-blend-mode: overlay;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .hero-title {
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin-bottom: 1.5rem;
+        color: white;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    .hero-subtitle {
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .section-title {
+        position: relative;
+        display: inline-block;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+    
+    .section-title::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -10px;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 4px;
+        background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        border-radius: 2px;
+    }
+    
+    .game-card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .game-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .game-card-img {
+        height: 200px;
+        object-fit: cover;
+    }
+    
+    .game-card-placeholder {
+        background: linear-gradient(45deg, #f1f1f1, #e6e6e6);
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .game-icon {
+        color: var(--primary-color);
+        opacity: 0.7;
+    }
+    
+    .game-card-body {
+        padding: 1.5rem;
+    }
+    
+    .game-title {
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: var(--dark-color);
+    }
+    
+    .game-description {
+        color: #666;
+        line-height: 1.5;
+    }
+    
+    .badge-likes {
+        background-color: var(--primary-color);
+    }
+    
+    .badge-comments {
+        background-color: var(--secondary-color);
+    }
+    
+    .btn-view-more {
+        background-color: white;
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+        border-radius: 50px;
+        font-weight: 600;
+        padding: 0.4rem 1.2rem;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-view-more:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    
+    .empty-games {
+        background-color: white;
+        border-radius: 15px;
+        padding: 3rem 2rem;
+        text-align: center;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        margin-top: 2rem;
+    }
+    
+    .empty-games i {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}

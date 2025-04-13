@@ -1,0 +1,112 @@
+{% extends 'jeux/admin/base_admin.html' %}
+
+{% block title %}{{ action }} un post - Administration{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">{{ action }} un post</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{% url 'admin_post_list' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Retour à la liste
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="{{ form.jeu.id_for_label }}" class="form-label">Jeu associé</label>
+                {{ form.jeu }}
+                {% if form.jeu.errors %}
+                    <div class="text-danger">{{ form.jeu.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label for="{{ form.titre.id_for_label }}" class="form-label">Titre</label>
+                {{ form.titre }}
+                {% if form.titre.errors %}
+                    <div class="text-danger">{{ form.titre.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label for="{{ form.type.id_for_label }}" class="form-label">Type de contenu</label>
+                {{ form.type }}
+                {% if form.type.errors %}
+                    <div class="text-danger">{{ form.type.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <div class="text-danger">{{ form.description.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3 content-field" id="image-field">
+                <label for="{{ form.image.id_for_label }}" class="form-label">Image</label>
+                {% if post.image %}
+                    <div class="mb-2">
+                        <img src="{{ post.image.url }}" alt="{{ post.titre }}" class="img-thumbnail" style="max-height: 150px;">
+                    </div>
+                {% endif %}
+                {{ form.image }}
+                {% if form.image.errors %}
+                    <div class="text-danger">{{ form.image.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3 content-field" id="video-field">
+                <label for="{{ form.video_url.id_for_label }}" class="form-label">URL de la vidéo</label>
+                {{ form.video_url }}
+                {% if form.video_url.errors %}
+                    <div class="text-danger">{{ form.video_url.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i> Enregistrer
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const typeSelect = document.getElementById('{{ form.type.id_for_label }}');
+        const imageField = document.getElementById('image-field');
+        const videoField = document.getElementById('video-field');
+        
+        function updateContentFields() {
+            const contentType = typeSelect.value;
+            
+            // Par défaut, masquer tous les champs
+            imageField.style.display = 'none';
+            videoField.style.display = 'none';
+            
+            // Afficher le champ approprié en fonction du type de contenu
+            if (contentType === 'IMAGE') {
+                imageField.style.display = 'block';
+            } else if (contentType === 'VIDEO') {
+                videoField.style.display = 'block';
+            }
+        }
+        
+        // Exécuter au chargement
+        updateContentFields();
+        
+        // Ajouter un écouteur d'événement pour les changements
+        typeSelect.addEventListener('change', updateContentFields);
+    });
+</script>
+{% endblock %}
