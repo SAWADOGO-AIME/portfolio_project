@@ -1,0 +1,39 @@
+{% extends 'jeux/admin/base_admin.html' %}
+
+{% block title %}Supprimer un jeu - Administration{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Supprimer un jeu</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{% url 'admin_jeu_list' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Retour à la liste
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        <h5 class="card-title mb-0">Confirmation de suppression</h5>
+    </div>
+    <div class="card-body">
+        <p class="mb-0">Êtes-vous sûr de vouloir supprimer le jeu "{{ jeu.titre }}" ?</p>
+        <p class="text-danger mb-0">
+            <strong>Attention:</strong> Cette action supprimera également tous les posts, commentaires et likes associés à ce jeu.
+        </p>
+    </div>
+    <div class="card-footer">
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'admin_jeu_list' %}" class="btn btn-secondary">
+                    <i class="fas fa-times me-1"></i> Annuler
+                </a>
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash me-1"></i> Confirmer la suppression
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
