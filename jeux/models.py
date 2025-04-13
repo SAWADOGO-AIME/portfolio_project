@@ -32,7 +32,7 @@ class Post(models.Model):
     type = models.CharField(max_length=5, choices=[('IMAGE', 'Image'), ('VIDEO', 'Vidéo'), ('TEXT', 'Texte')], default='TEXT')
     description = models.TextField()
     image = models.ImageField(upload_to='posts/images/', null=True, blank=True)
-    video_url = models.URLField(null=True, blank=True)
+    video_url = models.FileField(upload_to='posts/videos/', null=True, blank=True, help_text="Téléchargez une vidéo")
     date_creation = models.DateTimeField(default=timezone.now)
     
     def __str__(self):

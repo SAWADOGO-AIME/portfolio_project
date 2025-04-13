@@ -63,7 +63,15 @@
             </div>
             
             <div class="mb-3 content-field" id="video-field">
-                <label for="{{ form.video_url.id_for_label }}" class="form-label">URL de la vidéo</label>
+                <label for="{{ form.video_url.id_for_label }}" class="form-label">Vidéo</label>
+                {% if post.video_url %}
+                    <div class="mb-2">
+                        <video width="150" controls>
+                            <source src="{{ post.video_url.url }}" type="video/mp4">
+                            Votre navigateur ne supporte pas la lecture de vidéos.
+                        </video>
+                    </div>
+                {% endif %}
                 {{ form.video_url }}
                 {% if form.video_url.errors %}
                     <div class="text-danger">{{ form.video_url.errors }}</div>
