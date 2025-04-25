@@ -198,8 +198,8 @@ daphne==4.0.0
 Deprecated==1.2.18
 diff-match-patch==20241021
 distro==1.9.0
+
 dj-database-url==2.3.0
-Django==4.2.19
 django-admin-inline-paginator==0.4.0
 django-appconf==1.0.5
 django-ckeditor==6.5.1
