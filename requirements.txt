@@ -203,7 +203,6 @@ dj-database-url==2.3.0
 django-admin-inline-paginator==0.4.0
 django-appconf==1.0.5
 django-ckeditor==6.5.1
-django-ckeditor-5==0.2.16
 django-cloudinary-storage==0.3.0
 django-cors-headers==3.11.0
 django-crispy-forms==1.14.0
