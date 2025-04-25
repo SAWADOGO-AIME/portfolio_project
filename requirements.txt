@@ -228,7 +228,6 @@ django-session-timeout==0.1.0
 django-stdimage==6.0.1
 django-taggit==6.1.0
 django-widget-tweaks==1.4.12
-#djangorestframework==3.15.2
 djangorestframework-simplejwt==5.0.0
 factory_boy==3.3.1
 Faker==36.2.2
