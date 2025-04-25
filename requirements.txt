@@ -139,7 +139,7 @@ tablib>=3.5.0
 tinycss2>=1.2.1
 toml>=0.10.2
 tqdm>=4.65.0
-Twisted>=22.10.0
+twisted==22.10.0
 twisted-iocpsupport>=1.0.4
 txaio>=23.1.1
 typing_extensions>=4.7.1
