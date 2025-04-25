@@ -154,8 +154,6 @@ tqdm==4.67.1
 Twisted==22.10.0
 twisted-iocpsupport==1.0.4
 txaio==23.1.1
-typing_extensions==4.12.2
-tzdata==2025.1
 tzlocal==5.3.1
 uritemplate==4.1.1
 uritools==4.0.3
@@ -168,8 +166,6 @@ whitenoise==6.2.0
 wrapt==1.17.2
 xhtml2pdf==0.2.15
 zope.interface==6.0
-amqp==5.3.1
-anyio==4.8.0
 arabic-reshaper==3.0.0
 asgiref==3.8.1
 asn1crypto==1.5.1
@@ -312,7 +308,6 @@ Twisted==22.10.0
 twisted-iocpsupport==1.0.4
 txaio==23.1.1
 typing_extensions==4.12.2
-tzdata==2025.1
 tzlocal==5.3.1
 uritemplate==4.1.1
 uritools==4.0.3
