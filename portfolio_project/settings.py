@@ -125,9 +125,9 @@ LOGIN_URL = '/admin/login/'  # URL correcte pour la page de connexion
 
 #stokage de données sur render
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dwui6z4m1',
-    'API_KEY': '624872123967322',
-    'API_SECRET': 'jLF7jT9m58WrYEcEuM8IlXAz6HU',
+    'CLOUD_NAME': ('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': ('CLOUDINARY_API_KEY'),
+    'API_SECRET': ('CLOUDINARY_API_SECRET'),
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
