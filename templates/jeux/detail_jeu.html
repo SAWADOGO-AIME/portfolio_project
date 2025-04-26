@@ -94,14 +94,19 @@
                                     <div class="position-relative overflow-hidden rounded-3">
                                         <img src="{{ post.image.url }}" class="img-fluid rounded shadow-sm hover-zoom" alt="{{ post.titre }}">
                                     </div>
-                                {% elif post.media_type == 'VIDEO' and post.video_url %}
-                                <div style="width: 100%; height: 200px; overflow: hidden;">
-                                    <video src="{{ post.video_url.url }}" width="100%" height="100%" autoplay loop muted playsinline disablePictureInPicture controlsList="nodownload" style="pointer-events: none; object-fit: cover;" oncontextmenu="return false;"></video>
-                                </div>
-                                {% else %}
-                                <div class="game-card-placeholder text-center py-5">
-                                    <i class="fas fa-gamepad fa-4x game-icon"></i>
-                                </div>
+                                    {% elif post.type == 'VIDEO' and post.video_url %}
+                                    <div class="video-container position-relative rounded-3 mb-3">
+                                        <video 
+                                            src="{{ post.video_url.url }}" 
+                                            class="w-100 rounded shadow-sm" 
+                                            controls
+                                            preload="metadata"
+                                            poster="{{ post.jeu.image.url|default:'/static/images/video-poster.jpg' }}"
+                                            style="max-height: 400px; object-fit: contain;">
+                                            Votre navigateur ne prend pas en charge la lecture de vidéos.
+                                        </video>
+                                    </div>
+                                
                                 {% endif %}
                             </div>
                             
@@ -344,6 +349,22 @@
 
 .bg-gradient-dark {
     background: linear-gradient(45deg, #212529, #495057);
+}
+/*<!--TRAITEMENT DE POST VIDEO-->*/
+.video-container {
+    background-color: rgba(0,0,0,0.03);
+    padding: 10px;
+    transition: all 0.3s ease;
+}
+
+.video-container:hover {
+    background-color: rgba(0,0,0,0.06);
+    transform: scale(1.01);
+}
+
+video:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
 }
 </style>
 
