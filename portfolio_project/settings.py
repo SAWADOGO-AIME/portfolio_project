@@ -7,7 +7,6 @@ from decouple import config
 import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 # models.py
 # Removed misplaced code as it doesn't belong in settings.py
 
@@ -124,10 +123,12 @@ LOGIN_URL = '/admin/login/'  # URL correcte pour la page de connexion
 # Removed misplaced code as it doesn't belong in settings.py
 
 #stokage de données sur render
+# Pour le stockage vidéo
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': ('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': ('CLOUDINARY_API_KEY'),
-    'API_SECRET': ('CLOUDINARY_API_SECRET'),
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': config('CLOUDINARY_API_KEY'),
+    'API_SECRET': config('CLOUDINARY_API_SECRET'),
+    'SECURE': True
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
