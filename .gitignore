@@ -1,2 +1,4 @@
-".env" 
-".env" 
+".env"   # Oui, on l'ignore malgré tout pour la sécurité
+"__pycache__/" 
+"*.pyc" 
+"*.sqlite3" 
