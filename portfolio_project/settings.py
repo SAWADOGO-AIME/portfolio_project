@@ -1,4 +1,3 @@
-"""
 # portfolio_project/settings.py
 
 import os
@@ -133,6 +132,8 @@ CLOUDINARY_STORAGE = {
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
 """
 
 # portfolio_project/settings.py
@@ -245,3 +246,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # URL de redirection après connexion
 LOGIN_REDIRECT_URL = '/admin-dashboard/'
 LOGIN_URL = '/admin/login/'
+"""
